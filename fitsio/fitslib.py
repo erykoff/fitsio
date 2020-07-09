@@ -275,6 +275,7 @@ def _make_item(ext, extver=None):
 def write(filename, data, extname=None, extver=None, header=None,
           clobber=False, ignore_empty=False, units=None, table_type='binary',
           names=None, write_bitcols=False, compress=None, tile_dims=None,
+          lossless_floats=False,
           **keys):
     """
     Convenience function to create a new HDU and write the data.
@@ -367,7 +368,8 @@ def write(filename, data, extname=None, extver=None, header=None,
                    header=header,
                    names=names,
                    write_bitcols=write_bitcols,
-                   tile_dims=tile_dims)
+                   tile_dims=tile_dims,
+                   lossless_floats=lossless_floats)
 
 
 class FITS(object):
@@ -543,6 +545,7 @@ class FITS(object):
 
     def write(self, data, units=None, extname=None, extver=None,
               compress=None, tile_dims=None, header=None, names=None,
+              lossless_floats=False,
               table_type='binary', write_bitcols=False, **keys):
         """
         Write the data to a new HDU.
@@ -622,6 +625,7 @@ class FITS(object):
         if isimage:
             self.write_image(data, extname=extname, extver=extver,
                              compress=compress, tile_dims=tile_dims,
+                             lossless_floats=lossless_floats,
                              header=header)
         else:
             self.write_table(data, units=units,
@@ -631,7 +635,8 @@ class FITS(object):
                              write_bitcols=write_bitcols)
 
     def write_image(self, img, extname=None, extver=None,
-                    compress=None, tile_dims=None, header=None):
+                    compress=None, tile_dims=None, header=None,
+                    lossless_floats=False):
         """
         Create a new image extension and write the data.
 
@@ -678,7 +683,8 @@ class FITS(object):
         self.create_image_hdu(img,
                               header=header,
                               extname=extname, extver=extver,
-                              compress=compress, tile_dims=tile_dims)
+                              compress=compress, tile_dims=tile_dims,
+                              lossless_floats=lossless_floats)
 
         if header is not None:
             self[-1].write_keys(header)
@@ -695,6 +701,7 @@ class FITS(object):
                          extver=None,
                          compress=None,
                          tile_dims=None,
+                         lossless_floats=False,
                          header=None):
         """
         Create a new, empty image HDU and reload the hdu list.  Either

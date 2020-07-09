@@ -1300,6 +1300,11 @@ static int set_compression(fitsfile *fits,
         goto _set_compression_bail;
         return 1;
     }
+    if (fits_set_quantize_level(fits, 0, status)) {
+        set_ioerr_string_from_status(*status);
+        goto _set_compression_bail;
+        return 1;
+    }
 
     if (tile_dims_obj != Py_None) {
 
